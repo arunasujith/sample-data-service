@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api xmlns="http://ws.apache.org/ns/synapse" name="admin--logout" context="/api/logout/1.0.0" version="1.0.0" version-type="context">
+   <resource methods="DELETE POST PATCH PUT GET" url-mapping="/*" faultSequence="fault">
+      <inSequence>
+         <property name="api.ut.backendRequestTime" expression="get-property('SYSTEM_TIME')" />
+         <property expression="json-eval($.token)" name="token" />
+         <header name="Authorization" value="Basic NEtPVWhDMkYxS0hVbHdnQTc1RUtTdXpLOVlJYTpSVTdFdkJuX29WTHFPTE1idU41MzZxdWxheUlh" scope="transport" />
+         <payloadFactory media-type="xml">
+            <format>
+               <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                  <soapenv:Body>
+                     <root>
+                        <token>$1</token>
+                     </root>
+                  </soapenv:Body>
+               </soapenv:Envelope>
+            </format>
+            <args>
+               <arg evaluator="xml" expression="$ctx:token" />
+            </args>
+         </payloadFactory>
+         <property name="messageType" value="application/x-www-form-urlencoded" scope="axis2" type="STRING" />
+         <property name="DISABLE_CHUNKING" value="true" scope="axis2" type="STRING" />
+         <filter source="$ctx:AM_KEY_TYPE" regex="PRODUCTION">
+            <then>
+               <send>
+                  <endpoint name="admin--logout_APIproductionEndpoint_0">
+                     <http uri-template="https://localhost:8243/revoke" />
+                     <property name="ENDPOINT_ADDRESS" value="https://localhost:8243/revoke" />
+                  </endpoint>
+               </send>
+            </then>
+            <else>
+               <send>
+                  <endpoint name="admin--logout_APIsandboxEndpoint_0">
+                     <http uri-template="https://localhost:8243/revoke" />
+                     <property name="ENDPOINT_ADDRESS" value="https://localhost:8243/revoke" />
+                  </endpoint>
+               </send>
+            </else>
+         </filter>
+      </inSequence>
+      <outSequence>
+         <class name="org.wso2.carbon.apimgt.gateway.handlers.analytics.APIMgtResponseHandler" />
+         <send />
+      </outSequence>
+   </resource>
+   <handlers>
+      <!--
+      <handler class="org.wso2.carbon.apimgt.gateway.handlers.common.APIMgtLatencyStatsHandler"/>
+      <handler class="org.wso2.carbon.apimgt.gateway.handlers.security.CORSRequestHandler">
+         <property name="apiImplementationType" value="ENDPOINT"/>
+      </handler>
+      <handler class="org.wso2.carbon.apimgt.gateway.handlers.security.APIAuthenticationHandler"/>
+      <handler class="org.wso2.carbon.apimgt.gateway.handlers.throttling.ThrottleHandler"/>
+      <handler class="org.wso2.carbon.apimgt.gateway.handlers.analytics.APIMgtUsageHandler"/>
+      <handler class="org.wso2.carbon.apimgt.gateway.handlers.analytics.APIMgtGoogleAnalyticsTrackingHandler">
+         <property name="configKey" value="gov:/apimgt/statistics/ga-config.xml"/>
+      </handler>
+      <handler class="org.wso2.carbon.apimgt.gateway.handlers.ext.APIManagerExtensionHandler"/> -->
+   </handlers>
+</api>

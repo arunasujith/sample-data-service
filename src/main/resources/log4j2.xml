@@ -1,0 +1,26 @@
+<Configuration>
+    <CustomLevels>
+        <!--make the PERF level to 350, in order to enable perf logs-->
+        <CustomLevel name="PERF" intLevel="450" />
+    </CustomLevels>
+    <Appenders>
+        <Console name="CUSTOMER_SERVICE_CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d] [customer-service] %5p {%c} - %m%ex%n"/>
+        </Console>
+        <RollingFile name="CUSTOMER_SERVICE_LOGFILE" fileName="./customer-service.log"
+                     filePattern="./customer-service-%d{MM-dd-yyyy}.log">
+            <PatternLayout pattern="[%d] [customer-service] %5p {%c} - %m%ex%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="CUSTOMER_SERVICE_CONSOLE"/>
+            <AppenderRef ref="CUSTOMER_SERVICE_LOGFILE"/>
+        </Root>
+
+        <Logger name="com.sample.application" level="debug"/>
+    </Loggers>
+</Configuration>

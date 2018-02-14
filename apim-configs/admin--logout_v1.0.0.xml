@@ -4,7 +4,6 @@
       <inSequence>
          <property name="api.ut.backendRequestTime" expression="get-property('SYSTEM_TIME')" />
          <property expression="json-eval($.token)" name="token" />
-         <header name="Authorization" value="Basic NEtPVWhDMkYxS0hVbHdnQTc1RUtTdXpLOVlJYTpSVTdFdkJuX29WTHFPTE1idU41MzZxdWxheUlh" scope="transport" />
          <payloadFactory media-type="xml">
             <format>
                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">

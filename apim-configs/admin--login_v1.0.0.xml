@@ -5,7 +5,6 @@
          <property name="api.ut.backendRequestTime" expression="get-property('SYSTEM_TIME')" />
          <property expression="json-eval($.username)" name="username" />
          <property expression="json-eval($.password)" name="password" />
-         <header name="Authorization" value="Basic NEtPVWhDMkYxS0hVbHdnQTc1RUtTdXpLOVlJYTpSVTdFdkJuX29WTHFPTE1idU41MzZxdWxheUlh" scope="transport" />
          <log level="custom">
             <property name="Log: username" expression="get-property('username')" />
             <property name="Log: username" expression="get-property('password')" />
